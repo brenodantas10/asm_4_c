@@ -60,8 +60,8 @@ int main() {
     m_teste=mat_mul(m1,m2);
     printf("Resultado:\n");
 //    print_mat(m_teste);
-    printf("%.2f\n%.2f\n\n",m_teste[1],m_teste->v[2]);
-    printf("Tamanho das variaveis:\nInt:\t%d bytes\nInt64:\t%d bytes\nFloat:\t%d bytes\nDouble:\t%d bytes\n\n",sizeof(int),sizeof(uint64_t),sizeof(float),sizeof(double));
+    printf("%d\n\n",m_teste);
+    printf("Tamanho das variaveis:\nInt:\t%ld bytes\nInt64:\t%ld bytes\nFloat:\t%ld bytes\nDouble:\t%ld bytes\n\n",sizeof(int),sizeof(uint64_t),sizeof(float),sizeof(double));
     printf("\nTeste de produto interno entre vetores:\n");
 
     double a[] = {2, 26.7, 21.9, 1.5, -40.5, -23.5};
