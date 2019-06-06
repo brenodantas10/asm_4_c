@@ -1,22 +1,22 @@
-extern _malloc
+extern malloc
 
-global _alloc_matrix
-global _mat_mul
-global _alloc_matrix_ptr
-global _alloc
+global alloc_matrix
+global mat_mul
+global alloc_matrix_ptr
+global alloc
 
 section .text
 
-_alloc:
+alloc:
 	push	rbp
 	mov	rbp, rsp
 	imul	rdi, rsi
 	shl	rdi, 3
-	call	_malloc
+	call	malloc
 	pop	rbp
 	ret
 
-_alloc_matrix:
+alloc_matrix:
 	push	rbp
 	mov	rbp, rsp
 	sub	rsp, 16
@@ -25,32 +25,32 @@ _alloc_matrix:
 	mov	qword [rbp-8], rdi
 	mov	rdi, qword rsi
 	mov	rsi, qword rdx
-	call	_alloc
+	call	alloc
 	mov	rdx, qword [rbp-8]
 	mov	qword [rdx+16], rax
 	add	rsp, 16
 	pop	rbp
 	ret
 
-_alloc_matrix_ptr:
+alloc_matrix_ptr:
 	push	rbp
 	mov	rbp, rsp
 	sub	rsp, 32			;8B vagos mais 24B da matriz?
 	mov	qword [rbp-24], rsi
 	mov	qword [rbp-16], rdi
 	mov	rdi, 24
-	call	_malloc
+	call	malloc
 	mov	rdi, rax
 	mov	qword [rbp-8], rdi
 	mov	rsi, [rbp-16]
 	mov	rdx, qword [rbp-24]
-	call	_alloc_matrix
+	call	alloc_matrix
 	mov	rax, qword [rbp-8]
 	add	rsp, 32
 	pop	rbp
 	ret
 
-_mat_mul:
+mat_mul:
 	push	rbp
 	mov	rbp, rsp
 	mov	rax, qword [rsi+8]
@@ -62,7 +62,7 @@ _mat_mul:
 	jne	.error
 	mov	rsi, qword [rsi]
 	mov	rdx, qword [rdx+8]
-	call	_alloc_matrix
+	call	alloc_matrix
 	mov	rdi, qword [rbp-8]
 	mov	rsi, qword [rbp-16]
 	mov	rdx, qword [rbp-24]
