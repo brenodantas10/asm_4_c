@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "mat.h"
 #include "strInv.h"
-#include <time.h>
 
 void print_mat(matrix m) {
     if (m.v == NULL) return;
@@ -17,7 +16,6 @@ void print_mat(matrix m) {
 
 
 int main() {
-	clock_t aCLKi, aCLKo, cCLKi, cCLKo;
 
 	char msg[] = "Banana";
 
@@ -29,8 +27,7 @@ int main() {
 
     printf("\nMULTIPLICAÇÃO DE MATRIZES: \n\n");
 
-	aCLKi = clock();
-	matrix A = alloc_matrix(5, 10); aCLKo=clock();
+	matrix A = alloc_matrix(5, 10);
 	matrix B = alloc_matrix(10, 5);
 	matrix C = alloc_matrix(1, 2);
 	matrix D;
@@ -54,7 +51,6 @@ int main() {
     print_mat(C);
 
     printf("\nA * B: ");
-    cCLKi=clock();
     D = mat_mul(&A, &B);
 
 //    double * ma = (double *) malloc(A.l*B.c*8);
@@ -71,8 +67,6 @@ int main() {
 //    D.l = A.l;
 //    D.c = B.c;
 //    D.v = ma;
-
-    cCLKo=clock();
 
     if (D.v == NULL)
         printf("\tMultiplicação inválida: %llu != %llu.", A.c, B.l);
@@ -97,7 +91,4 @@ int main() {
     free_matrix(A);
     free_matrix(B);
     free_matrix(C);
-
-//    printf("\nClocks de Alocacao da matriz A = %llu\n", (long long unsigned int)(aCLKo-aCLKi));
-//    printf("\nClocks de Multiplicacao A*B = %llu\n", (long long unsigned int)(cCLKo-cCLKi));
 }
