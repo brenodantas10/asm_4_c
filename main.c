@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "mat.h"
 #include "strInv.h"
+#include <time.h>
 
 void print_mat(matrix m) {
     if (m.v == NULL) return;
@@ -29,18 +30,17 @@ int main() {
     printf("\nMULTIPLICAÇÃO DE MATRIZES: \n\n");
 
 	aCLKi = clock();
-	matrix A = alloc_matrix(3, 3); aCLKo=clock();
-	matrix B = alloc_matrix(3, 2);
+	matrix A = alloc_matrix(5, 10); aCLKo=clock();
+	matrix B = alloc_matrix(10, 5);
 	matrix C = alloc_matrix(1, 2);
 	matrix D;
 
-    A.v[0] = 1; A.v[1] = 2; A.v[2] = 3;
-    A.v[3] = 4; A.v[4] = 4; A.v[5] = 4;
-    A.v[6] = 4; A.v[7] = 4; A.v[8] = 4;
+    unsigned int i = 0, j = 0, k = 0;
 
-    B.v[0] = 1; B.v[1] = 2;
-    B.v[2] = 3; B.v[3] = 4;
-    B.v[4] = 4; B.v[5] = 3;
+    for (i = 0; i < 50; ++i) {
+        A.v[i] = (float) (i+1) / 10;
+        B.v[i] = 10 / (float) (i + 1);
+    }
 
     C.v[0] = 10; C.v[1] = 11;
 
@@ -55,10 +55,27 @@ int main() {
 
     printf("\nA * B: ");
     cCLKi=clock();
-    D = mat_mul(&A, &B); cCLKo=clock();
+    D = mat_mul(&A, &B);
+
+//    double * ma = (double *) malloc(A.l*B.c*8);
+//
+//    for (i = 0; i < A.l; ++i) {
+//        for (j = 0; j < B.c; ++j) {
+//            ma[i * B.c + j] = 0;
+//            for (k = 0; k < A.c; ++k) {
+//                ma[i * B.c + j] += A.v[i * A.c + k] * B.v[k * B.c + j];
+//            }
+//        }
+//    }
+//
+//    D.l = A.l;
+//    D.c = B.c;
+//    D.v = ma;
+
+    cCLKo=clock();
 
     if (D.v == NULL)
-        printf("\tMultiplicação inválida: %lu != %lu.", A.c, B.l);
+        printf("\tMultiplicação inválida: %llu != %llu.", A.c, B.l);
     else {
         printf("\n");
         print_mat(D);
@@ -69,7 +86,7 @@ int main() {
     D = mat_mul(&A, &C);
 
     if (D.v == NULL)
-        printf("Multiplicação inválida: %lu != %lu.\n", A.c, C.l);
+        printf("Multiplicação inválida: %llu != %llu.\n", A.c, C.l);
     else {
         printf("\n");
         print_mat(D);
@@ -81,6 +98,6 @@ int main() {
     free_matrix(B);
     free_matrix(C);
 
-    printf("\nClocks de Alocacao da matriz A = %.2f\n", (double)(aCLKo-aCLKi));
-    printf("\nClocks de Multiplicacao A*B    = %.2f\n", (double)(cCLKo-cCLKi));
+//    printf("\nClocks de Alocacao da matriz A = %llu\n", (long long unsigned int)(aCLKo-aCLKi));
+//    printf("\nClocks de Multiplicacao A*B = %llu\n", (long long unsigned int)(cCLKo-cCLKi));
 }
