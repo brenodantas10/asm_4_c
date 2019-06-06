@@ -2,7 +2,6 @@ global strInv
 
 section .text
 
-
 ;strInv recebe um ponteiro para a string e inverte a string mantendo no mesmo endereço de memória
 strInv:
 	push	rbx			;

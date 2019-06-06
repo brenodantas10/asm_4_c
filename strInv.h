@@ -1,0 +1,1 @@
+void	strInv(char*);

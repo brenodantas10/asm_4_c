@@ -1,22 +1,25 @@
-extern malloc
+extern _malloc
+extern _free
 
-global alloc_matrix
-global mat_mul
-global alloc_matrix_ptr
-global alloc
+global _alloc_matrix
+global _mat_mul
+global _alloc_ptr_matrix
+global _alloc
+global _free_matrix
+global _free_ptr_matrix
 
 section .text
 
-alloc:
+_alloc:
 	push	rbp
 	mov	rbp, rsp
 	imul	rdi, rsi
 	shl	rdi, 3
-	call	malloc
+	call	_malloc
 	pop	rbp
 	ret
 
-alloc_matrix:
+_alloc_matrix:
 	push	rbp
 	mov	rbp, rsp
 	sub	rsp, 16
@@ -25,32 +28,32 @@ alloc_matrix:
 	mov	qword [rbp-8], rdi
 	mov	rdi, qword rsi
 	mov	rsi, qword rdx
-	call	alloc
+	call	_alloc
 	mov	rdx, qword [rbp-8]
 	mov	qword [rdx+16], rax
 	add	rsp, 16
 	pop	rbp
 	ret
 
-alloc_matrix_ptr:
+_alloc_ptr_matrix:
 	push	rbp
 	mov	rbp, rsp
 	sub	rsp, 32			;8B vagos mais 24B da matriz?
 	mov	qword [rbp-24], rsi
 	mov	qword [rbp-16], rdi
 	mov	rdi, 24
-	call	malloc
+	call	_malloc
 	mov	rdi, rax
 	mov	qword [rbp-8], rdi
 	mov	rsi, [rbp-16]
 	mov	rdx, qword [rbp-24]
-	call	alloc_matrix
+	call	_alloc_matrix
 	mov	rax, qword [rbp-8]
 	add	rsp, 32
 	pop	rbp
 	ret
 
-mat_mul:
+_mat_mul:
 	push	rbp
 	mov	rbp, rsp
 	mov	rax, qword [rsi+8]
@@ -62,14 +65,11 @@ mat_mul:
 	jne	.error
 	mov	rsi, qword [rsi]
 	mov	rdx, qword [rdx+8]
-	call	alloc_matrix
+	call	_alloc_matrix
 	mov	rdi, qword [rbp-8]
 	mov	rsi, qword [rbp-16]
 	mov	rdx, qword [rbp-24]
 	mov	rcx, qword [rdi]
-; add rdi, 16
-; add rsi, 16
-; add rdx, 16
 .iter_rows:
 	mov	qword [rbp-32], rcx
 	mov	rcx, [rdi+8]
@@ -110,8 +110,8 @@ mat_mul:
 	movsd	qword [rax], xmm0
 	loop	.iter_cols
 	mov	rcx, qword [rbp-32]
-	dec	rcx ; loop _iter_rows
-	jnz	.iter_rows ; loop _iter_rows
+	dec	rcx ; loop iter_rows
+	jnz	.iter_rows ; loop iter_rows
 .end:
 	add	rsp, 48
 	pop	rbp
@@ -119,3 +119,34 @@ mat_mul:
 .error:
 	mov	qword [rdi+16], 0
 	jmp	.end
+
+_matrix_from_ptr:
+    push rbp
+    mov rbp, rsp
+    mov qword [rdi], rdx
+    mov qword [rdi+8], rcx
+    mov qword [rdi+16], rsi
+    pop rbp
+    ret
+
+_free_matrix:
+    push rbp
+    mov rbp, rsp
+    lea rax, [rbp+16]
+    mov rdi, qword [rax+16]
+    call _free
+    pop rbp
+    ret
+
+_free_ptr_matrix:
+    push rbp
+    mov rbp, rsp
+    mov qword [rbp-8], rdi
+    sub rsp, 16
+    mov rdi, qword [rdi+16]
+    call _free
+    mov rdi, qword [rbp-8]
+    call _free
+    add rsp, 16
+    pop rbp
+    ret
