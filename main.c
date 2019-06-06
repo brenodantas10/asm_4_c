@@ -98,6 +98,6 @@ int main() {
     free_matrix(B);
     free_matrix(C);
 
-    printf("\nClocks de Alocacao da matriz A = %llu\n", (long long unsigned int)(aCLKo-aCLKi));
-    printf("\nClocks de Multiplicacao A*B = %llu\n", (long long unsigned int)(cCLKo-cCLKi));
+//    printf("\nClocks de Alocacao da matriz A = %llu\n", (long long unsigned int)(aCLKo-aCLKi));
+//    printf("\nClocks de Multiplicacao A*B = %llu\n", (long long unsigned int)(cCLKo-cCLKi));
 }
