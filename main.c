@@ -7,12 +7,30 @@ typedef struct {
     double *v;
 } matrix;
 
+void	strInv(char*);
 double * alloc(uint64_t, uint64_t);
 matrix alloc_matrix(uint64_t, uint64_t);
 matrix* alloc_matrix_ptr(uint64_t, uint64_t);
 matrix mat_mul(const matrix*, const matrix*);
 
+void print_mat(matrix m){
+        int i=0, j=0;
+        for(i=0; i<m.l; i++){
+                for(j=0; j<m.c; j++){
+                        printf("%.2f\t",m.v[j+i*m.c]);
+                }
+                printf("\n");
+        }
+}
+
+
 int main() {
+	char msg[]="Banana";
+	printf("%s\n", msg);
+	strInv(msg);
+	printf("%s\n\n", msg);
+
+
 	matrix a = alloc_matrix(3, 3);
 	matrix b = alloc_matrix(3, 3);
 
@@ -37,6 +55,16 @@ int main() {
 	b.v[8] = 3;
 
 	matrix c = mat_mul(&a, &b);
+
+	printf("Imprimindo matriz a:\n");
+	print_mat(a);
+
+	printf("\nImprimindo matriz b:\n");
+	print_mat(b);
+
+	printf("\nImprimindo matriz a*b:\n");
+	print_mat(c);
+	printf("\n");
 
 	for (unsigned i = 0; i < c.l; ++i) {
 		for (unsigned j = 0; j < c.c; ++j) {
