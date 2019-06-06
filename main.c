@@ -7,7 +7,7 @@ void print_mat(matrix m) {
     if (m.v == NULL) return;
 
     for (unsigned int i=0; i < m.l; ++i){
-        for (unsigned j=0; j < m.c; ++j){
+        for (unsigned int j=0; j < m.c; ++j){
             printf("%.2f\t", m.v[j + i * m.c]);
         }
         printf("\n");
