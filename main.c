@@ -32,7 +32,7 @@ int main() {
 
 
 	matrix a = alloc_matrix(3, 3);
-	matrix b = alloc_matrix(3, 3);
+	matrix b = alloc_matrix(3, 2);
 
 	a.v[0] = 1;
 	a.v[1] = 2;
@@ -50,9 +50,9 @@ int main() {
 	b.v[3] = 4;
 	b.v[4] = 4;
 	b.v[5] = 3;
-	b.v[6] = 4;
-	b.v[7] = 3;
-	b.v[8] = 3;
+;	b.v[6] = 4;
+;	b.v[7] = 3;
+;	b.v[8] = 3;
 
 	matrix c = mat_mul(&a, &b);
 
