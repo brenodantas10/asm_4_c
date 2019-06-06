@@ -9,7 +9,7 @@ endif
 
 all: programa
 programa: main.o mat.o strInv.o
-	gcc main.o mat.o strInv.o -o programa
+	gcc -no-pie main.o mat.o strInv.o -o programa
 mat.o:
 	nasm -f $(OPT) assembly/$(UNAME_S)/mat.asm -o ./mat.o
 strInv.o:
