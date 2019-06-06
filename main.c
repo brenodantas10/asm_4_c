@@ -54,7 +54,7 @@ int main() {
     D = mat_mul(&A, &B);
 
     if (D.v == NULL)
-        printf("\tMultiplicação inválida: %llu != %llu.", A.c, B.l);
+        printf("\tMultiplicação inválida: %lu != %lu.", A.c, B.l);
     else {
         printf("\n");
         print_mat(D);
@@ -65,7 +65,7 @@ int main() {
     D = mat_mul(&A, &C);
 
     if (D.v == NULL)
-        printf("Multiplicação inválida: %llu != %llu.\n", A.c, C.l);
+        printf("Multiplicação inválida: %lu != %lu.\n", A.c, C.l);
     else {
         printf("\n");
         print_mat(D);

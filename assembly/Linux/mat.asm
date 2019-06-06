@@ -1,5 +1,5 @@
-extern _malloc
-extern _free
+extern malloc
+extern free
 
 global alloc_matrix
 global mat_mul
