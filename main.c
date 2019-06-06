@@ -1,83 +1,75 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
-#include <stdlib.h>
 
 typedef struct {
     uint64_t l, c;
-    double* v;
-} Matriz;
+    double *v;
+} matrix;
 
-Matriz* mat_mul(const Matriz*, const Matriz*);
+double * alloc(uint64_t, uint64_t);
+matrix alloc_matrix(uint64_t, uint64_t);
+matrix* alloc_matrix_ptr(uint64_t, uint64_t);
+matrix mat_mul(const matrix*, const matrix*);
 
-double mult_sum(const double[], const double[], uint64_t);
+int main() {
+	matrix a = alloc_matrix(3, 3);
+	matrix b = alloc_matrix(3, 3);
 
+	a.v[0] = 1;
+	a.v[1] = 2;
+	a.v[2] = 3;
+	a.v[3] = 4;
+	a.v[4] = 4;
+	a.v[5] = 4;
+	a.v[6] = 4;
+	a.v[7] = 4;
+	a.v[8] = 4;
 
-void alloc_mat(Matriz *m, const uint64_t l, const uint64_t c);
+	b.v[0] = 1;
+	b.v[1] = 2;
+	b.v[2] = 3;
+	b.v[3] = 4;
+	b.v[4] = 4;
+	b.v[5] = 3;
+	b.v[6] = 4;
+	b.v[7] = 3;
+	b.v[8] = 3;
 
-void free_mat(Matriz *m) {
-    m->l = 0;
-    m->c = 0;
-    free(m->v);
-}
-void print_mat(Matriz *m){
-	int i=0, j=0;
-	for(i=0; i<m->l; i++){
-		for(j=0; j<m->c; j++){
-			printf("%.2f\t",m->v[j+i*m->c]);
+	matrix c = mat_mul(&a, &b);
+
+	for (unsigned i = 0; i < c.l; ++i) {
+		for (unsigned j = 0; j < c.c; ++j) {
+			printf("c[%u, %u]: %f\t", i, j, c.v[i*c.c + j]);
 		}
 		printf("\n");
 	}
-}
 
-int main() {
-    Matriz *m1, *m2;
-    m1=(Matriz *) malloc( sizeof(Matriz));
-    m2=(Matriz *) malloc( sizeof(Matriz));
+//	if (c.v == NULL) {
+//		printf("Impossível realizar multiplicação: %llu != %llu\n", a.c, b.l);
+//	} else {
+////		c.v[c.l*c.c-1] = 10;
+//	}
 
-    printf("Teste de multiplicacao de matriz\n\n");
-    alloc_mat(m1, 2, 3);
-    alloc_mat(m2, 3, 4);
-    int i;
-    for(i=0;(i<m1->c*m1->l);i++){
-            m1->v[i]=i+1;
-    }
-    for(i=0;i<(m2->c*m2->l);i++){
-            m2->v[i]=i+1;
-    }
-    m2->v[i+100]=30;
-    
-    printf("Primeira Matriz:\n");
-    print_mat(m1);
-
-    printf("\nSegunda Matriz:\n");
-    print_mat(m2);
-    printf("\nMultiplicando Matrizes...\n\n");
-
-    Matriz *m_teste;
-    m_teste=mat_mul(m1,m2);
-    printf("Resultado:\n");
-    print_mat(m_teste);
-//    printf("%d\n\n",m_teste);
-    printf("Tamanho das variaveis:\nInt:\t%ld bytes\nInt64:\t%ld bytes\nFloat:\t%ld bytes\nDouble:\t%ld bytes\n\n",sizeof(int),sizeof(uint64_t),sizeof(float),sizeof(double));
-    printf("\nTeste de produto interno entre vetores:\n");
-
-    double a[] = {2, 26.7, 21.9, 1.5, -40.5, -23.5};
-    double b[] = {3, 26.7, 21.9, 1.5, -40.5, -23.5};
-
-    printf("%20.2f\n", mult_sum(a, b, 3));
-    printf("%20.2f\n", mult_sum(a, b, 2));
-
-    free_mat(m1);
-    free_mat(m2);
-    printf("Desalocando m_teste\n\n");
-    free_mat(m_teste);
-    printf("Desalocado\n");
-    free(m1);
-    printf("UHUUUUUUUUU1\n");
-    free(m2);
-    printf("UHUUUUUUUUU2\n");
-    free(m_teste);
-    printf("UHUUUUUUUUU3\n");
-
-    return 0;
+//	matrix d = alloc_matrix(1200, 100000);
+////	matrix* e = alloc_matrix_ptr(1000, 10000);
+//
+//	printf("%llu, %llu\n", a.l, a.c);
+//	printf("%llu, %llu\n", d.l, d.c);
+////	printf("%llu, %llu, %p\n", e->l, e->c, e->v);
+//
+////	e->v[e->c*e->l-1] = 40;
+//
+//	c = mat_mul(&a, &d);
+//
+//	if (c.v == NULL) {
+//		printf("Impossível realizar multiplicação: %llu != %llu\n", a.c, d.l);
+//	} else {
+//		printf("Multiplicação realizada!\n");
+//	}
+//
+////	free(d->v);
+//	free(a.v);
+//	free(e->v);
+	return 0;
 }
