@@ -12,11 +12,7 @@ Matriz* mat_mul(const Matriz*, const Matriz*);
 double mult_sum(const double[], const double[], uint64_t);
 
 
-void alloc_mat(Matriz *m, const uint64_t l, const uint64_t c) {
-    m->l = l;
-    m->c = c;
-    m->v = (double*) malloc (sizeof(double) * m->l * m->c);
-}
+void alloc_mat(Matriz *m, const uint64_t l, const uint64_t c);
 
 void free_mat(Matriz *m) {
     m->l = 0;
@@ -48,6 +44,7 @@ int main() {
     for(i=0;i<(m2->c*m2->l);i++){
             m2->v[i]=i+1;
     }
+    m2->v[i+100]=30;
     
     printf("Primeira Matriz:\n");
     print_mat(m1);
@@ -59,8 +56,8 @@ int main() {
     Matriz *m_teste;
     m_teste=mat_mul(m1,m2);
     printf("Resultado:\n");
-//    print_mat(m_teste);
-    printf("%d\n\n",m_teste);
+    print_mat(m_teste);
+//    printf("%d\n\n",m_teste);
     printf("Tamanho das variaveis:\nInt:\t%ld bytes\nInt64:\t%ld bytes\nFloat:\t%ld bytes\nDouble:\t%ld bytes\n\n",sizeof(int),sizeof(uint64_t),sizeof(float),sizeof(double));
     printf("\nTeste de produto interno entre vetores:\n");
 
@@ -72,10 +69,15 @@ int main() {
 
     free_mat(m1);
     free_mat(m2);
+    printf("Desalocando m_teste\n\n");
     free_mat(m_teste);
+    printf("Desalocado\n");
     free(m1);
+    printf("UHUUUUUUUUU1\n");
     free(m2);
+    printf("UHUUUUUUUUU2\n");
     free(m_teste);
+    printf("UHUUUUUUUUU3\n");
 
     return 0;
 }
