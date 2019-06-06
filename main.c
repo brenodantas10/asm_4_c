@@ -16,6 +16,8 @@ void print_mat(matrix m) {
 
 
 int main() {
+	clock_t aCLKi, aCLKo, cCLKi, cCLKo;
+
 	char msg[] = "Banana";
 
 	printf("INVERSÃO DE STRING:\n\n");
@@ -26,7 +28,8 @@ int main() {
 
     printf("\nMULTIPLICAÇÃO DE MATRIZES: \n\n");
 
-	matrix A = alloc_matrix(3, 3);
+	aCLKi = clock();
+	matrix A = alloc_matrix(3, 3); aCLKo=clock();
 	matrix B = alloc_matrix(3, 2);
 	matrix C = alloc_matrix(1, 2);
 	matrix D;
@@ -51,10 +54,11 @@ int main() {
     print_mat(C);
 
     printf("\nA * B: ");
-    D = mat_mul(&A, &B);
+    cCLKi=clock();
+    D = mat_mul(&A, &B); cCLKo=clock();
 
     if (D.v == NULL)
-        printf("\tMultiplicação inválida: %llu != %llu.", A.c, B.l);
+        printf("\tMultiplicação inválida: %lu != %lu.", A.c, B.l);
     else {
         printf("\n");
         print_mat(D);
@@ -65,7 +69,7 @@ int main() {
     D = mat_mul(&A, &C);
 
     if (D.v == NULL)
-        printf("Multiplicação inválida: %llu != %llu.\n", A.c, C.l);
+        printf("Multiplicação inválida: %lu != %lu.\n", A.c, C.l);
     else {
         printf("\n");
         print_mat(D);
@@ -76,4 +80,7 @@ int main() {
     free_matrix(A);
     free_matrix(B);
     free_matrix(C);
+
+    printf("\nClocks de Alocacao da matriz A = %.2f\n", (double)(aCLKo-aCLKi));
+    printf("\nClocks de Multiplicacao A*B    = %.2f\n", (double)(cCLKo-cCLKi));
 }
