@@ -27,10 +27,8 @@ strInv:
 	inc	rcx
 	cmp	rcx, rdx		;Checa se não chegou no final da string
 	jne	.invLoop		;Se não chegou repete
-
 .finished:
 	pop	rdx			;Puxa valores originais das variáveis
 	pop	rcx			;da pilha do ESP
 	pop	rbx			;
 	ret
-
