@@ -3,7 +3,7 @@ UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S), Darwin)
 	OPT := macho64
-	AsmFlag := --PREFIX_
+	AsmFlag := --prefix _
 else
 	OPT := elf64
 	AsmFlag :=
