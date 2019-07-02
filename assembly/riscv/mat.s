@@ -79,13 +79,12 @@ free_matrix:
 	addi    sp,sp,-16
         sd      s0,8(sp)
         sd      ra,0(sp)
-	ld	a0,16(a0)
+	mv	a0,a2
 	call	free
 	ld      ra,0(sp)
 	ld	s0,8(sp)
         addi    sp,sp,16
         jr      ra
-        .size   free_matrix, .-free_matrix
 
 mat_mul:
 	addi    sp,sp,-48
@@ -106,14 +105,15 @@ mat_mul:
 	ld	s10,0(s3)
 	mul	s10,s7,s10
 	slli	s10,s10,3
-	ld      a0,16(s3)
-	add	s10,s10,a0
+	ld      a4,16(s3)
+	add	s10,s10,a4
 	slli	s7,s7,3
         ld      s8,8(s2)
         slli    s8,s8,3
 	ld	s4,16(s2)
         mv      s6,s4
 mat_mul_col:
+	mv	s4,s6
 	ld	s5,16(s3)
 	add	s5,s5,s9
 	sd	zero,-24(s0)
@@ -130,8 +130,8 @@ mat_mul_elm:
 	add	a1,a1,s9
         fsd     fa0,0(a1)
 	addi	s9,s9,8
-	sub	a3,s5,s10
-	bne	zero,a3,mat_mul_col
+	sub	a3,s10,s5
+	bge	a3,zero,mat_mul_col
 mat_mul_end:
 	ld      s0,40(sp)
         ld      ra,32(sp)
