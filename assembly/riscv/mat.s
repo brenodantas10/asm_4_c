@@ -188,8 +188,8 @@ mat_trans:
 	li	s1,0
 	li	s2,0
 .Loop_el:
-	fsd	fa0,0(a2)
 	fld	fa0,0(a1)
+	fsd	fa0,0(a2)
 	addi	a2,a2,1
 	
 	addi	s2,s2,1
