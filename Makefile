@@ -9,15 +9,25 @@ else
 	AsmFlag :=
 endif
 
-all: programa
-programa: main.o mat.o strInv.o
+all: riscv
+x64: x64_main.o x64_mat.o x64_strInv.o
 	gcc -no-pie main.o mat.o strInv.o -o programa
-mat.o:
+x64_mat.o:
 	nasm $(AsmFlag) -f $(OPT) assembly/mat.asm -o ./mat.o
-strInv.o:
+x64_strInv.o:
 	nasm $(AsmFlag) -f $(OPT) assembly/strInv.asm -o ./strInv.o
-main.o: main.c
+x64_main.o: main.c
 	gcc -c main.c -o main.o
+
+
+riscv: riscv_main.o riscv_mat.o riscv_strInv.o
+	riscv64-unknown-elf-gcc main.o mat.o strInv.o -o programa
+riscv_mat.o:
+	riscv64-unknown-elf-gcc -c riscv/mat.s -o mat.o
+riscv_strInv.o:
+	riscv64-unknown-elf-gcc -c riscv/strInv.s -o strInv.o
+riscv_main.o:
+	riscv64-unknown-elf-gcc -c main.c -o main.o
 clean:
 	rm -rf *.o programa
 mrproper: clean
