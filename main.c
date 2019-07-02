@@ -60,19 +60,19 @@ int main() {
     matrix C = mat_mul(&A, &B);
     print_mat(C);
 
-    C = mat_pow_s(&C, 1/7.0);
-    printf("\nRaiz (ordem 7):\n");
+//    C = mat_pow_s(&C, 1/7.0);
+//    printf("\nRaiz (ordem 7):\n");
 
-    printf("\n");
-    print_mat(C);
-    printf("\n");
+//    printf("\n");
+//    print_mat(C);
+//    printf("\n");
 
-    C = mat_sigmoid(&C);
-    printf("\nSigmoid da raiz:\n");
+//    C = mat_sigmoid(&C);
+//    printf("\nSigmoid da raiz:\n");
 
-    printf("\n");
-    print_mat(C);
-    printf("\n");
+//    printf("\n");
+//    print_mat(C);
+//    printf("\n");
     
     // Transposta
     // printf("\nMatriz C Transposta:\n");
