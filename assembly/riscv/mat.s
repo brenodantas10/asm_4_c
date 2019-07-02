@@ -171,8 +171,7 @@ mat_trans:
 	sd	a1,-32(s0)
 	sd	a2,-40(s0)
 
-	ld	a0,-32(s0)
-	ld	a2,0(a0)
+	ld	a2,0(a1)
 	ld	a1,8(a1)
 	ld	a0,-24(s0)
 	call	alloc_matrix
@@ -190,7 +189,7 @@ mat_trans:
 .Loop_el:
 	fld	fa0,0(a1)
 	fsd	fa0,0(a2)
-	addi	a2,a2,1
+	addi	a2,a2,8
 	
 	addi	s2,s2,1
 	slli	s5,s5,3
