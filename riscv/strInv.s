@@ -7,46 +7,39 @@ strInv:
 	addi	sp, sp, -40
 	sd	s0, 32(sp)
 	addi	s0, sp, 40
-	sd	a1, -24(s0)
-	sd	a2, -16(s0)
-	sd	a3, -8(s0)
+	sd	a1, -32(s0)
+	sd	a2, -24(s0)
+	sd	a3, -16(s0)
 	
-	mv	zero, a2
-	addi	sp, sp, -8
-	sd	a2, 8(sp)
+	li	a2, 0
+	addi	sp, sp, -1
+	sb	a2, 1(sp)
 .strLoop:
-	mv	a1, zero
-
-	add	a0, a0, a2
+	li	a1, 0
 	lb	a1, 0(a0)
-	sub	a0, a0, a2
+	addi	sp, sp, -1
+	sb	a1, 1(sp)
 
-	addi	sp, sp, -8
-	sd	a1, 8(sp)
+	addi	a0, a0, 1
 	addi	a2, a2, 1
-	beqz	a1, .strLoop
-
-	ld	a1, 8(sp)
-	addi	sp, sp, 8
-
-	mv	a3, a2
-	mv	a2, zero
-.invLoop:
-	ld	a1, 8(sp)
-	addi	sp, sp, 8
-
-	add	a0, a0, a2
-	sb	a1, 0(a0)
-	sub	a0, a0, a2
+	bnez	a1, .strLoop
 	
-	addi	a2, a2, 1
-	bne	a2, a3, .invLoop
+	addi	sp, sp, 1
+	sub	a0, a0, a2
+.invLoop:
+	lb	a1, 1(sp)
+	addi	sp, sp, 1
+	sb	a1, 0(a0)
+	
+	addi	a0, a0, 1
+	addi	a2, a2, -1
+	bnez	a2, .invLoop
 
 .finished:
-	ld	a3, -8(s0)
-	ld	a2, -16(s0)
-	ld	a1, -24(s0)
+	ld	a3, -16(s0)
+	ld	a2, -24(s0)
+	ld	a1, -32(s0)
 	ld	s0, 32(sp)
 	addi	sp, sp, 40
-	mv	a0, zero
+	li	a0, 0
 	jr	ra
