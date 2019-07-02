@@ -16,7 +16,7 @@ void print_mat(matrix m) {
 
 
 int main() {
-	char msg[] = "Banana";
+	char msg[] = "There are no Strings on Me";
 
 	printf("INVERSÃO DE STRING:\n\n");
 
@@ -24,7 +24,7 @@ int main() {
 	strInv(msg);
 	printf("String invertida: %s\n", msg);
 
-        printf("\nMULTIPLICAÇÃO DE MATRIZES: \n\n");
+        printf("\nOPERAÇÕES COM MATRIZES: \n\n");
 	
 	matrix A=alloc_matrix(2,5);
 	matrix B=alloc_matrix(5,2);
@@ -56,25 +56,50 @@ int main() {
     printf("\nImprimindo matriz B:\n");
     print_mat(B);
 
-    printf("\nA*B=C: ");
+    printf("\nMultiplicação:\n");
     matrix C = mat_mul(&A, &B);
-    printf("%d, %d\n", C.l, C.c);
     print_mat(C);
+    
+    printf("\nExponencial da Matriz:\n");
+    matrix D = mat_exp(&A);
+    print_mat(D);
+    free_matrix(D);
 
-    C = mat_pow_s(&C, 1/2.0);
-    printf("\nRaiz:\n");
+    printf("\nPotência 1/2 termo a termo:\n");
+    D = mat_pow_s(&A, 1/2.0);
+    print_mat(D);
+    free_matrix(D);
 
-    if (C.v == NULL)
-        printf("Multiplicação inválida: %lu != %lu.\n", A.c, B.l);
-    else {
-        printf("\n");
-        print_mat(C);
-        printf("\n");
-    }
+    printf("\nTermo é potência do escalar:\n");
+    D = mat_s_pow(&A,2.0);
+    print_mat(D);
+    free_matrix(D);
+
+    printf("\nSoma com escalar (3): \n");
+    D = mat_s_add(&A,3.0);
+    print_mat(D);
+    free_matrix(D);
+
+    printf("\nMutiplicação por escalar (3):\n");
+    D= mat_s_mul(&A,3.0);
+    print_mat(D);
+    free_matrix(D);
+
+    printf("\nDivisão por escalar (2):\n");
+    D = mat_div_s(&A,2.0);
+    print_mat(D);
+    free_matrix(D);
+
+    printf("\nTermo é divisão do Escalar (100):\n");
+    D = mat_s_div(&A,100.0);
+    print_mat(D);
+    free_matrix(D);
+   
     // Transposta
     printf("\nMatriz C Transposta:\n");
-    matrix D=mat_trans(&C);
+    D=mat_trans(&C);
     print_mat(D);
+
 
     // Desalocação
     printf("\n\nDesalocando Matrizes\n");

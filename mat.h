@@ -19,3 +19,4 @@ matrix mat_s_div(const matrix*, double);
 matrix mat_div_s(const matrix*, double);
 matrix mat_pow_s(const matrix*, double);
 matrix mat_s_pow(const matrix*, double);
+matrix mat_s_mul(const matrix*, double);
