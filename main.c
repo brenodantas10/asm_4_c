@@ -27,15 +27,15 @@ int main() {
         printf("\nMULTIPLICAÇÃO DE MATRIZES: \n\n");
 	
 	double v_1[] = {
-		1.0,
-		2.0,
-		3.0,
-		4.0,
-		5.0,
+		1.0, 1.0,
+		2.0, 2.0,
+		3.0, 3.0,
+		4.0, 4.0,
+		5.0, 5.0
 	}, v_0[] = {1.0, 2.0, 3.0, 4.0, 5.0};
 
 	matrix A = matrix_from_ptr(v_0, 1, 5);
-	matrix B = matrix_from_ptr(v_1, 5, 1);
+	matrix B = matrix_from_ptr(v_1, 5, 2);
 
     printf("Imprimindo matriz A:\n");
     print_mat(A);
@@ -46,7 +46,7 @@ int main() {
     printf("\nA * C: ");
     
     matrix C = mat_mul(&A, &B);
-
+    printf("%d, %d\n\n", C.l, C.c);
     if (C.v == NULL)
         printf("Multiplicação inválida: %lu != %lu.\n", A.c, B.l);
     else {
