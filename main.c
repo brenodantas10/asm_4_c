@@ -59,7 +59,7 @@ int main() {
     printf("\nA * C: ");
     
     matrix C = mat_mul(&A, &B);
-    C = mat_s_add(&C, 2.0);
+    C = mat_pow_s(&C, 1/2.0);
     printf("%d, %d\n\n", C.l, C.c);
     if (C.v == NULL)
         printf("Multiplicação inválida: %lu != %lu.\n", A.c, B.l);
