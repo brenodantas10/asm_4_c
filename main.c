@@ -26,7 +26,16 @@ int main() {
 
         printf("\nMULTIPLICAÇÃO DE MATRIZES: \n\n");
 	
-	double v_1[] = {
+	matrix A=alloc_matrix(1,5);
+	matrix B=alloc_matrix(5,2);
+
+	for(int i=0; i<5; i++){
+		A.v[i]=i+1;
+		B.v[2*i]=i+1;
+		B.v[2*i+1]=i+1;
+	}
+
+/*	double v_2[] = {
 		1.0, 1.0,
 		2.0, 2.0,
 		3.0, 3.0,
@@ -36,7 +45,7 @@ int main() {
 
 	matrix A = matrix_from_ptr(v_0, 1, 5);
 	matrix B = matrix_from_ptr(v_1, 5, 2);
-
+*/
     printf("Imprimindo matriz A:\n");
     print_mat(A);
 
@@ -56,7 +65,13 @@ int main() {
     }
 
     // Desalocação
-    // free_matrix(A);
-    // free_matrix(B);
-    // free_matrix(C);
+    printf("Desalocando Matrizes\n");
+    free_matrix(A);
+    printf("Matriz A desalocada\n");
+    free_matrix(B);
+    printf("Matriz B desalocada\n");
+    free_matrix(C);
+    printf("Matriz C desalocada\n");
+
+    return 0;
 }
