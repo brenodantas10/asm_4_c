@@ -105,9 +105,15 @@ mat_mul:
 	ld	s10,0(s3)
 	mul	s10,s7,s10
 	slli	s10,s10,3
-	ld      a4,16(s3)
-	add	s10,s10,a4
+	ld      a0,16(s3)
+	add	s10,s10,a0
 	slli	s7,s7,3
+	ld	a4,16(s1)
+	ld	a0,0(s1)
+	ld	a1,8(s1)
+	mul	a0,a1,a0
+	slli	a0,a0,3
+	add	s11,a4,a0
         ld      s8,8(s2)
         slli    s8,s8,3
 	ld	s4,16(s2)
@@ -126,11 +132,14 @@ mat_mul_elm:
 	add	s5,s5,s7
 	sub	a3,s4,s6
 	bne	a3,s8,mat_mul_elm
-	ld      a1,16(s1)
-	add	a1,a1,s9
-        fsd     fa0,0(a1)
+        fsd     fa0,0(a4)
 	addi	s9,s9,8
+	addi	a4,a4,8
 	sub	a3,s10,s5
+	bge	a3,zero,mat_mul_col
+	add	s6,s6,s8
+	sub	a3,s11,a4
+	li	s9,0
 	bge	a3,zero,mat_mul_col
 mat_mul_end:
 	ld      s0,40(sp)

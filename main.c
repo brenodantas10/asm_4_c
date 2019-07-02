@@ -29,12 +29,15 @@ int main() {
 	double v_1[] = {
 		1.0, 1.0,
 		2.0, 2.0,
-		3.0, 3.0,
+		3.0, 0.0,
 		4.0, 4.0,
 		5.0, 5.0
-	}, v_0[] = {1.0, 2.0, 3.0, 4.0, 5.0};
+	}, v_0[] = {
+		1.0, 2.0, 3.0, 4.0, 5.0,
+		1.0, 0.0, 10.0, 0.0, 0.0
+	};
 
-	matrix A = matrix_from_ptr(v_0, 1, 5);
+	matrix A = matrix_from_ptr(v_0, 2, 5);
 	matrix B = matrix_from_ptr(v_1, 5, 2);
 
     printf("Imprimindo matriz A:\n");
