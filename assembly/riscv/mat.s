@@ -79,7 +79,7 @@ free_matrix:
 	addi    sp,sp,-16
         sd      s0,8(sp)
         sd      ra,0(sp)
-	mv	a0,a2
+	ld	a0,16(a0)
 	call	free
 	ld      ra,0(sp)
 	ld	s0,8(sp)

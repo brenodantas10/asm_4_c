@@ -4,12 +4,11 @@
 .type	strInv, @function
 
 strInv:
-	addi	sp, sp, -40
-	sd	s0, 32(sp)
-	addi	s0, sp, 40
-	sd	a1, -32(s0)
+	addi	sp, sp, -32
+	sd	s0, 24(sp)
+	addi	s0, sp, 32
+	sd	a1, -16(s0)
 	sd	a2, -24(s0)
-	sd	a3, -16(s0)
 	
 	li	a2, 0
 	addi	sp, sp, -1
@@ -36,10 +35,10 @@ strInv:
 	bnez	a2, .invLoop
 
 .finished:
-	ld	a3, -16(s0)
 	ld	a2, -24(s0)
-	ld	a1, -32(s0)
-	ld	s0, 32(sp)
-	addi	sp, sp, 40
+	ld	a1, -16(s0)
+	ld	s0, 24(sp)
+	addi	sp, sp, 32
 	li	a0, 0
 	jr	ra
+	.size	strInv, .-strInv
