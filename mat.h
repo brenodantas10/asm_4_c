@@ -12,3 +12,6 @@ matrix* alloc_matrix_ptr(uint64_t, uint64_t);
 matrix mat_mul(const matrix*, const matrix*);
 void free_matrix(matrix);
 void free_ptr_matrix(matrix*);
+
+matrix mat_exp(const matrix*);
+matrix mat_s_add(const matrix*, double);

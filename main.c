@@ -35,8 +35,8 @@ int main() {
 		B.v[2*i]=i+1;
 		B.v[2*i+1]=i+1;
 	}
-
-/*	double v_2[] = {
+/*
+	double v_2[] = {
 		1.0, 1.0,
 		2.0, 2.0,
 		3.0, 0.0,
@@ -59,6 +59,7 @@ int main() {
     printf("\nA * C: ");
     
     matrix C = mat_mul(&A, &B);
+    C = mat_s_add(&C, 2.0);
     printf("%d, %d\n\n", C.l, C.c);
     if (C.v == NULL)
         printf("Multiplicação inválida: %lu != %lu.\n", A.c, B.l);

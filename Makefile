@@ -21,7 +21,7 @@ x64_main.o: main.c
 
 
 riscv: riscv_main.o riscv_mat.o riscv_strInv.o
-	riscv64-unknown-elf-gcc main.o mat.o strInv.o -o programa
+	riscv64-unknown-elf-gcc main.o mat.o strInv.o -lm -o programa
 riscv_mat.o:
 	riscv64-unknown-elf-gcc -c assembly/riscv/mat.s -o mat.o
 riscv_strInv.o:
