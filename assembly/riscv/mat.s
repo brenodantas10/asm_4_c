@@ -1,11 +1,12 @@
 	.text
 	.align	1
-	.globl	alloc_matrix, free_matrix, alloc_ptr_matrix, free_ptr_matrix, matrix_from_ptr, mat_mul, mat_exp, mat_s_add, mat_s_div, mat_div_s, mat_s_mul, mat_pow_s, mat_s_pow, mat_div, mat_sigmoid
+	.globl	alloc_matrix, free_matrix, alloc_ptr_matrix, free_ptr_matrix, matrix_from_ptr, mat_mul, mat_trans, mat_exp, mat_s_add, mat_s_div, mat_div_s, mat_s_mul, mat_pow_s, mat_s_pow, mat_div, mat_sigmoid
 	.type	alloc_matrix, @function
 	.type	free_matrix, @function
 	.type	alloc_ptr_matrix, @function
 	.type	matrix_from_ptr, @function
-	.type	mat_mul, @function	
+	.type	mat_mul, @function
+	.type   mat_trans, @function
 	.type	mat_exp, @function
 	.type	mat_s_add, @function
 	.type	mat_s_div, @function
@@ -159,6 +160,59 @@ mat_mul_error:
 	ld      s0,40(sp)
         jal	x0,mat_mul_end
 	.size	mat_mul, .-mat_mul
+
+mat_trans:
+	addi	sp,sp,-40
+	sd	s0,32(sp)
+	sd	ra,24(sp)
+	addi	s0,sp,40
+	
+	sd	a0,-24(s0)
+	sd	a1,-32(s0)
+	sd	a2,-40(s0)
+
+	ld	a0,-32(s0)
+	ld	a2,0(a0)
+	ld	a1,8(a1)
+	ld	a0,-24(s0)
+	call	alloc_matrix
+
+	ld	a0,-32(s0)
+	ld	a1,16(a0)
+	ld	a0,-24(s0)
+	ld	a2,16(a0)
+
+	ld	s5,0(a0)
+	ld	s6,8(a0)
+	
+	li	s1,0
+	li	s2,0
+.Loop_el:
+	fsd	fa0,0(a2)
+	fld	fa0,0(a1)
+	addi	a2,a2,1
+	
+	addi	s2,s2,1
+	slli	s5,s5,3
+	add	a1,a1,s5
+	srli	s5,s5,3
+	bne	s2,s6,.Loop_el
+	
+	addi	s2,s6,-1
+	mul	s2,s2,s5
+	slli	s2,s2,3
+	sub	a1,a1,s2
+	addi	a1,a1,8
+	li	s2,0
+	addi	s1,s1,1
+	bne	s1,s5,.Loop_el
+.end:
+	ld	a0,-24(s0)
+	ld	s0,32(sp)
+	ld	ra,24(sp)
+	addi	sp,sp,40
+	jr	ra
+	.size	mat_trans, .-mat_trans
 
 mat_exp:
 	addi    sp,sp,-48

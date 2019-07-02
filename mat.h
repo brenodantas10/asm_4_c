@@ -14,6 +14,8 @@ void free_matrix(matrix);
 void free_ptr_matrix(matrix*);
 
 matrix mat_sigmoid(const matrix*);
+matrix mat_trans(const matrix*);
+
 matrix mat_exp(const matrix*);
 matrix mat_s_add(const matrix*, double);
 matrix mat_s_div(const matrix*, double);

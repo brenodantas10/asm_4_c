@@ -56,27 +56,39 @@ int main() {
     printf("\nImprimindo matriz B:\n");
     print_mat(B);
 
-    printf("\nA * C: ");
-    
+    printf("\nA*B=C: \n");
     matrix C = mat_mul(&A, &B);
-    C = mat_pow_s(&C, 1/2.0);
-    printf("%d, %d\n\n", C.l, C.c);
-    if (C.v == NULL)
-        printf("Multiplicação inválida: %lu != %lu.\n", A.c, B.l);
-    else {
-        printf("\n");
-        print_mat(C);
-        printf("\n");
-    }
+    print_mat(C);
+
+    C = mat_pow_s(&C, 1/7.0);
+    printf("\nRaiz (ordem 7):\n");
+
+    printf("\n");
+    print_mat(C);
+    printf("\n");
+
+    C = mat_sigmoid(&C);
+    printf("\nSigmoid da raiz:\n");
+
+    printf("\n");
+    print_mat(C);
+    printf("\n");
+    
+    // Transposta
+    // printf("\nMatriz C Transposta:\n");
+    // matrix D=mat_trans(&C);
+    // print_mat(D);
 
     // Desalocação
-    printf("Desalocando Matrizes\n");
+    printf("\n\nDesalocando Matrizes\n");
     free_matrix(A);
     printf("Matriz A desalocada\n");
     free_matrix(B);
     printf("Matriz B desalocada\n");
     free_matrix(C);
     printf("Matriz C desalocada\n");
+    // free_matrix(D);
+    // printf("Matriz D desalocada\n");
 
     return 0;
 }
