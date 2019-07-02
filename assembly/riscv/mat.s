@@ -1,6 +1,6 @@
 	.text
 	.align	1
-	.globl	alloc_matrix, free_matrix, alloc_ptr_matrix, free_ptr_matrix, matrix_from_ptr, mat_mul, mat_exp, mat_s_add, mat_s_div, mat_div_s, mat_s_mul, mat_pow_s, mat_s_pow
+	.globl	alloc_matrix, free_matrix, alloc_ptr_matrix, free_ptr_matrix, matrix_from_ptr, mat_mul, mat_exp, mat_s_add, mat_s_div, mat_div_s, mat_s_mul, mat_pow_s, mat_s_pow, mat_div, mat_sigmoid
 	.type	alloc_matrix, @function
 	.type	free_matrix, @function
 	.type	alloc_ptr_matrix, @function
@@ -13,6 +13,8 @@
 	.type	mat_s_mul, @function
 	.type	mat_pow_s, @function
 	.type	mat_s_pow, @function
+	.type	mat_div, @function
+	.type	mat_sigmoid, @function
 
 alloc_matrix:
 	addi	sp,sp,-32
@@ -156,11 +158,16 @@ mat_mul_error:
 	sd	a5,16(a0)
 	ld      s0,40(sp)
         jal	x0,mat_mul_end
+	.size	mat_mul, .-mat_mul
 
 mat_exp:
-        addi    sp,sp,-16
-        sd      s0,8(sp)
-        sd      ra,0(sp)
+	addi    sp,sp,-48
+        sd      s0,40(sp)
+        sd      ra,32(sp)
+        sd      s1,24(sp)
+        sd      s2,16(sp)
+        sd      s3,8(sp)
+        addi    s0,sp,48
 	mv	s1,a0
 	mv	s3,a1
 	ld	a3,0(a1)
@@ -180,19 +187,25 @@ mat_exp_op:
 	addi	s3,s3,8
 	sub     a0,s2,s1
         bge     a0,zero,mat_exp_op
-        ld      ra,0(sp)
-        ld      s0,8(sp)
-        addi    sp,sp,16
+	ld      s3,8(sp)
+        ld      s2,16(sp)
+        ld      s1,24(sp)
+        ld      ra,32(sp)
+        ld      s0,40(sp)
+        addi    sp,sp,48
         jr      ra
 
 mat_s_add:
-        addi    sp,sp,-32
-        sd      s0,16(sp)
-        sd      ra,8(sp)
-	addi	s0,s0,32
+	addi    sp,sp,-48
+        sd      s0,40(sp)
+        sd      ra,32(sp)
+        sd      s1,24(sp)
+        sd      s2,16(sp)
+        sd      s3,8(sp)
+        addi    s0,sp,48
         mv      s1,a0
         mv      s3,a1
-	fsd	fa0,-24(s0)
+	fsd	fa0,-48(s0)
         ld      a3,0(a1)
         ld      a2,8(a1)
         mv      a1,a3
@@ -204,26 +217,32 @@ mat_s_add:
         add     s2,s2,s1
 mat_s_add_op:
         fld     fa0,0(s3)
-	fld	fa1,-24(s0)
+	fld	fa1,-48(s0)
 	fadd.d	fa0,fa0,fa1
         fsd     fa0,0(s1)
         addi    s1,s1,8
         addi    s3,s3,8
         sub     a0,s2,s1
         bge     a0,zero,mat_s_add_op
-        ld      ra,8(sp)
-	ld      s0,16(sp)
-        addi    sp,sp,32
+	ld      s3,8(sp)
+        ld      s2,16(sp)
+        ld      s1,24(sp)
+        ld      ra,32(sp)
+        ld      s0,40(sp)
+        addi    sp,sp,48
         jr      ra
 
 mat_s_div:
-        addi    sp,sp,-32
-        sd      s0,16(sp)
-        sd      ra,8(sp)
-        addi    s0,s0,32
-        mv      s1,a0
+        addi    sp,sp,-48
+        sd      s0,40(sp)
+        sd      ra,32(sp)
+        sd      s1,24(sp)
+        sd      s2,16(sp)
+        sd      s3,8(sp)
+        addi    s0,sp,48
+	mv      s1,a0
         mv      s3,a1
-        fsd     fa0,-24(s0)
+        fsd     fa0,-48(s0)
         ld      a3,0(a1)
         ld      a2,8(a1)
         mv      a1,a3
@@ -235,26 +254,32 @@ mat_s_div:
         add     s2,s2,s1
 mat_s_div_op:
         fld     fa0,0(s3)
-        fld     fa1,-24(s0)
+        fld     fa1,-48(s0)
         fdiv.d  fa0,fa1,fa0
         fsd     fa0,0(s1)
         addi    s1,s1,8
         addi    s3,s3,8
         sub     a0,s2,s1
         bge     a0,zero,mat_s_div_op
-        ld      ra,8(sp)
-        ld      s0,16(sp)
-	addi    sp,sp,32
+	ld      s3,8(sp)
+        ld      s2,16(sp)
+        ld      s1,24(sp)
+        ld      ra,32(sp)
+        ld      s0,40(sp)
+        addi    sp,sp,48
         jr      ra
 
 mat_div_s:
-        addi    sp,sp,-32
-        sd      s0,16(sp)
-        sd      ra,8(sp)
-        addi    s0,s0,32
-        mv      s1,a0
+        addi    sp,sp,-48
+        sd      s0,40(sp)
+        sd      ra,32(sp)
+        sd      s1,24(sp)
+        sd      s2,16(sp)
+        sd      s3,8(sp)
+        addi    s0,sp,48
+	mv      s1,a0
         mv      s3,a1
-        fsd     fa0,-24(s0)
+        fsd     fa0,-48(s0)
         ld      a3,0(a1)
         ld      a2,8(a1)
         mv      a1,a3
@@ -266,26 +291,32 @@ mat_div_s:
         add     s2,s2,s1
 mat_div_s_op:
         fld     fa0,0(s3)
-        fld     fa1,-24(s0)
+        fld     fa1,-48(s0)
         fdiv.d  fa0,fa0,fa1
         fsd     fa0,0(s1)
         addi    s1,s1,8
         addi    s3,s3,8
         sub     a0,s2,s1
         bge     a0,zero,mat_div_s_op
-        ld      ra,8(sp)
-	ld      s0,16(sp)
-        addi    sp,sp,32
+	ld      s3,8(sp)
+        ld      s2,16(sp)
+        ld      s1,24(sp)
+        ld      ra,32(sp)
+        ld      s0,40(sp)
+        addi    sp,sp,48
         jr      ra
 
 mat_s_mul:
-        addi    sp,sp,-32
-        sd      s0,16(sp)
-        sd      ra,8(sp)
-        addi    s0,s0,32
+        addi    sp,sp,-48
+        sd      s0,40(sp)
+        sd      ra,32(sp)
+        sd      s1,24(sp)
+        sd      s2,16(sp)
+        sd      s3,8(sp)
+        addi    s0,sp,48
         mv      s1,a0
         mv      s3,a1
-        fsd     fa0,-24(s0)
+        fsd     fa0,-48(s0)
         ld      a3,0(a1)
         ld      a2,8(a1)
         mv      a1,a3
@@ -297,26 +328,32 @@ mat_s_mul:
         add     s2,s2,s1
 mat_s_mul_op:
         fld     fa0,0(s3)
-        fld     fa1,-24(s0)
+        fld     fa1,-48(s0)
         fmul.d  fa0,fa0,fa1
         fsd     fa0,0(s1)
         addi    s1,s1,8
         addi    s3,s3,8
         sub     a0,s2,s1
         bge     a0,zero,mat_s_mul_op
-        ld      ra,8(sp)
-        ld      s0,16(sp)
-        addi    sp,sp,32
+        Ld      s0,40(sp)
+        Ld      ra,32(sp)
+        Ld      s1,24(sp)
+        Ld      s2,16(sp)
+        Ld      s3,8(sp)
+        addi    sp,sp,48
         jr      ra
 
 mat_pow_s:
-        addi    sp,sp,-32
-        sd      s0,16(sp)
-        sd      ra,8(sp)
-        addi    s0,s0,32
-        mv      s1,a0
+        addi    sp,sp,-48
+        sd      s0,40(sp)
+        sd      ra,32(sp)
+        sd      s1,24(sp)
+        sd      s2,16(sp)
+        sd      s3,8(sp)
+        addi    s0,sp,48
+	mv      s1,a0
         mv      s3,a1
-        fsd     fa0,-24(s0)
+        fsd     fa0,-48(s0)
         ld      a3,0(a1)
         ld      a2,8(a1)
         mv      a1,a3
@@ -328,26 +365,32 @@ mat_pow_s:
         add     s2,s2,s1
 mat_pow_s_op:
         fld     fa0,0(s3)
-        fld     fa1,-24(s0)
+        fld     fa1,-48(s0)
         call	pow
         fsd     fa0,0(s1)
         addi    s1,s1,8
         addi    s3,s3,8
         sub     a0,s2,s1
         bge     a0,zero,mat_pow_s_op
-        ld      ra,8(sp)
-        ld      s0,16(sp)
-        addi    sp,sp,32
+	ld      s3,8(sp)
+        ld      s2,16(sp)
+        ld      s1,24(sp)
+        ld      ra,32(sp)
+        ld      s0,40(sp)
+        addi    sp,sp,48
         jr      ra
 
 mat_s_pow:
-        addi    sp,sp,-32
-        sd      s0,16(sp)
-        sd      ra,8(sp)
-        addi    s0,s0,32
+	addi    sp,sp,-48
+        sd      s0,40(sp)
+        sd      ra,32(sp)
+        sd      s1,24(sp)
+        sd      s2,16(sp)
+        sd      s3,8(sp)
+        addi    s0,sp,48
         mv      s1,a0
         mv      s3,a1
-        fsd     fa0,-24(s0)
+        fsd     fa0,-48(s0)
         ld      a3,0(a1)
         ld      a2,8(a1)
         mv      a1,a3
@@ -359,14 +402,93 @@ mat_s_pow:
         add     s2,s2,s1
 mat_s_pow_op:
         fld     fa1,0(s3)
-        fld     fa0,-24(s0)
+        fld     fa0,-48(s0)
         call    pow
         fsd     fa0,0(s1)
         addi    s1,s1,8
         addi    s3,s3,8
         sub     a0,s2,s1
         bge     a0,zero,mat_s_pow_op
+	ld      s3,8(sp)
+        ld      s2,16(sp)
+        ld      s1,24(sp)
+        ld      ra,32(sp)
+        ld      s0,40(sp)
+        addi    sp,sp,48
+        jr      ra
+
+mat_div:
+        addi    sp,sp,-32
+        sd      s0,16(sp)
+        sd      ra,8(sp)
+        addi    s0,sp,32
+        mv      s1,a0
+        mv      s3,a1
+	mv	s4,a2
+        fsd     fa0,-24(s0)
+	ld	a4,0(a2)
+        ld      a3,0(a1)
+	bne	a4,a3,mat_div_error
+	ld	a4,8(a2)
+        ld      a2,8(a1)
+	bne     a4,a2,mat_div_error
+        mv      a1,a3
+        mul     a3,a1,a2
+        slli    s2,a3,3
+        call    alloc_matrix
+        ld      s1,16(s1)
+        ld      s3,16(s3)
+	ld	s4,16(s4)
+        add     s2,s2,s1
+mat_div_op:
+        fld     fa0,0(s3)
+        fld     fa1,0(s4)
+	fdiv.d	fa0,fa0,fa1
+        fsd     fa0,0(s1)
+        addi    s1,s1,8
+	addi    s3,s3,8
+	addi	s4,s4,8
+        sub     a0,s2,s1
+        bge     a0,zero,mat_div_op
+mat_div_end:
 	ld      ra,8(sp)
         ld      s0,16(sp)
         addi    sp,sp,32
         jr      ra
+mat_div_error:
+        sd      zero,16(s1)
+        jal     x0,mat_div_end
+
+mat_sigmoid:
+        addi    sp,sp,-88
+        sd      s0,80(sp)
+        sd      ra,72(sp)
+	add	s0,sp,88
+        mv      s1,a0
+	lui	s2,%hi(.LC0)
+	fld	fa0,%lo(.LC0)(s2)
+	addi	a0,s0,-88
+	call	mat_s_mul
+	addi	a0,s0,-64
+	addi	a1,s0,-88
+	call	mat_exp
+	lui	a3,%hi(.LC1)
+	fld	fa0,%lo(.LC1)(a3)
+	addi	a0,s0,-40
+	addi	a1,s0,-64
+	call	mat_s_add
+	lui	a3,%hi(.LC1)
+	fld	fa0,%lo(.LC1)(a3)
+	mv	a0,s1
+	addi	a1,s0,-40
+	call	mat_s_div
+	ld      ra,72(sp)
+        ld      s0,80(sp)
+        addi    sp,sp,88
+        jr      ra
+.LC0:
+	.word	0
+	.word	-1074790400
+.LC1:
+	.word	0
+	.word	1072693248
