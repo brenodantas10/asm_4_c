@@ -13,9 +13,9 @@ all: riscv
 x64: x64_main.o x64_mat.o x64_strInv.o
 	gcc -no-pie main.o mat.o strInv.o -o programa
 x64_mat.o:
-	nasm $(AsmFlag) -f $(OPT) assembly/mat.asm -o ./mat.o
+	nasm $(AsmFlag) -f $(OPT) assembly/x86_64/mat.asm -o ./mat.o
 x64_strInv.o:
-	nasm $(AsmFlag) -f $(OPT) assembly/strInv.asm -o ./strInv.o
+	nasm $(AsmFlag) -f $(OPT) assembly/x86_64/strInv.asm -o ./strInv.o
 x64_main.o: main.c
 	gcc -c main.c -o main.o
 
@@ -23,9 +23,9 @@ x64_main.o: main.c
 riscv: riscv_main.o riscv_mat.o riscv_strInv.o
 	riscv64-unknown-elf-gcc main.o mat.o strInv.o -o programa
 riscv_mat.o:
-	riscv64-unknown-elf-gcc -c riscv/mat.s -o mat.o
+	riscv64-unknown-elf-gcc -c assembly/riscv/mat.s -o mat.o
 riscv_strInv.o:
-	riscv64-unknown-elf-gcc -c riscv/strInv.s -o strInv.o
+	riscv64-unknown-elf-gcc -c assembly/riscv/strInv.s -o strInv.o
 riscv_main.o:
 	riscv64-unknown-elf-gcc -c main.c -o main.o
 clean:

@@ -6,6 +6,7 @@ global  alloc_ptr_matrix
 global  alloc
 global  free_matrix
 global  free_ptr_matrix
+global matrix_from_ptr
 section .text
 
 ; Função para alocar um ponteiro (matriz) dinamicamente (utilizar o malloc)
