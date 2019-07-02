@@ -26,11 +26,12 @@ int main() {
 
         printf("\nMULTIPLICAÇÃO DE MATRIZES: \n\n");
 	
-	matrix A=alloc_matrix(1,5);
+	matrix A=alloc_matrix(2,5);
 	matrix B=alloc_matrix(5,2);
 
 	for(int i=0; i<5; i++){
-		A.v[i]=i+1;
+		A.v[2*i]=i+1;
+		A.v[2*i+1]=i+2;
 		B.v[2*i]=i+1;
 		B.v[2*i+1]=i+1;
 	}
